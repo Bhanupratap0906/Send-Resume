@@ -12,11 +12,13 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.options("*", cors());
 
 /* =========================
@@ -32,22 +34,27 @@ const options = {
       description: "API for sending emails with resume attachment",
     },
     servers: [
-    {
-      url: process.env.RENDER_EXTERNAL_URL
-        ? process.env.RENDER_EXTERNAL_URL
-        : "http://localhost:9060",
-    },
-  ],
+      {
+        url: process.env.RENDER_EXTERNAL_URL
+          ? process.env.RENDER_EXTERNAL_URL
+          : "http://localhost:9060",
+      },
+    ],
   },
   apis: ["./api/index.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
-app.use("/api-docs", (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  next();
-}, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/api-docs",
+  (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    next();
+  },
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec),
+);
 /* =========================
    Routes
 ========================= */
@@ -100,14 +107,16 @@ app.post("/send-mail", async (req, res) => {
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
-
     /* =========================
        Send Emails
     ========================= */

@@ -116,6 +116,9 @@ app.post("/send-mail", async (req, res) => {
       tls: {
         rejectUnauthorized: false,
       },
+      connectionTimeout: 10000, // 10s timeout
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
     /* =========================
        Send Emails

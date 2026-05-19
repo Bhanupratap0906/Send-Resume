@@ -15,7 +15,6 @@
     "dotenv": "^17.4.2",
     "express": "^4.21.2",
     "nodemailer": "^8.0.7",
-    "serverless-http": "^4.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }

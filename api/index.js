@@ -4,8 +4,10 @@ import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 import { emailText } from "./mailText.js";
+import { fileURLToPath } from "url";
 dotenv.config();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(express.json());
@@ -28,7 +30,7 @@ app.get("/api-docs", (req, res) => {
     },
     servers: [
       {
-        url: "https://send-resume-ashy.vercel.app",
+        url: "http://localhost:9060",
       },
     ],
     paths: {
@@ -117,21 +119,27 @@ app.post("/send-mail", async (req, res) => {
       await transporter.sendMail({
         from: process.env.EMAIL,
         to: email,
-        subject: "Application for Backend Developer Role - Bhanu Pratap Singh Shekhawat",
+        subject:
+          "Application for Backend Developer Role - Bhanu Pratap Singh Shekhawat",
         html: emailText,
         attachments: [
           {
-             filename: "Bhanu_Pratap_Resume.pdf",
-            path: join(__dirname, "Bhanu_Pratap_Resume.pdf"), 
+            filename: "Bhanu_Pratap_Resume.pdf",
+            path: path.join(__dirname, "Bhanu_Pratap_Resume.pdf"),
           },
         ],
       });
     }
-
-    res.status(200).json({ success: true, message: "Emails sent successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Emails sent successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Error sending email", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error sending email",
+      error: error.message,
+    });
   }
 });
 

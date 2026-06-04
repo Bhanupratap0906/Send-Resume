@@ -1,4 +1,4 @@
-import { app } from "./api/index.js";
+import app from "./api/index.js";
 
 const PORT = 9060;
 

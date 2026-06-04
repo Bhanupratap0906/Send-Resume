@@ -121,8 +121,8 @@ app.post("/send-mail", async (req, res) => {
         html: emailText,
         attachments: [
           {
-            filename: "Bhanu_Pratap_Resume.pdf",
-            path: path.resolve(process.cwd(), "api/Bhanu_Pratap_Resume.pdf"),
+             filename: "Bhanu_Pratap_Resume.pdf",
+            path: join(__dirname, "Bhanu_Pratap_Resume.pdf"), 
           },
         ],
       });
